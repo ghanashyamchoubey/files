@@ -35,5 +35,12 @@ Update port number in /etc/sysconfig/jenkins
 
 Execute shell command in configuration
 
+#!/bin/sh
+sudo umask 077
+PID=`ps -eaf | grep revolut-test-1.0-SNAPSHOT-jar-with-dependencies.jar | grep -v grep | awk '{print $2}'`
+if [[ "" != "$PID" ]]; then
+	echo "killing $PID"
+	sudo kill -9 $PID
+fi
 cp target/revolut-test-1.0-SNAPSHOT-jar-with-dependencies.jar /apps/deployments/
 nohup java -jar /apps/deployments/revolut-test-1.0-SNAPSHOT-jar-with-dependencies.jar > /apps/deployments/output.txt &
